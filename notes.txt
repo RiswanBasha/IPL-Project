@@ -1,0 +1,30 @@
+A decorator in Python is a function that "wraps" another function or method to add extra behavior before and/or after the original function runs—without modifying the original function’s code.
+
+It's a very "Pythonic" way to apply logic (like logging, error handling, authentication, etc.) across multiple functions in a clean and reusable way.
+
+OOPS:
+
+I have used a cls method but if we want to use static also its possible
+
+if we want to use instance style like self, initialize a constructor __init__ and put URL and DB and call as a seperate method and return it like self.
+
+and in data ingestion.py ..in mongo connector...call the class and then call the method as an object uri = Config()....then self.client = MongoClient(uri.get_mongo_uri())
+
+Instead of just using default settings, you search for the best parameters for the Logistic Regression model:
+
+C (regularization strength): Controls how much the model tries to fit all the data exactly (overfitting vs. underfitting)
+
+solver: Algorithm used for optimization
+
+max_iter: Maximum number of training iterations
+
+For each combination, you test model performance using:
+
+Precision (minimize false positives)
+
+Recall (minimize false negatives)
+
+F1 (balance both)
+
+You use cross-validation (5 splits) to make sure your results are robust.
+

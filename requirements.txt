@@ -1,0 +1,22 @@
+fastapi
+ipykernel
+notebook
+numpy
+pandas
+pymongo
+python-dotenv
+pytest
+requests
+scikit-learn
+streamlit
+uvicorn
+matplotlib
+seaborn
+xgboost
+joblib
+# Optional, uncomment if using deep learning:
+# tensorflow
+# torch
+
+# Optional, uncomment if using docker SDK in Python scripts:
+docker
