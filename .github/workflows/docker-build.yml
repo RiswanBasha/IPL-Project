@@ -38,3 +38,10 @@ jobs:
           IMAGE_REPO="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/ipl-streamlit-app:latest"
           echo "Pushing image: $IMAGE_REPO"
           docker push $IMAGE_REPO
+
+      # (Optional) Run container with secret env at runtime (for test, not prod deployment)
+      # - name: Run Docker container
+      #   run: |
+      #     IMAGE_REPO="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/ipl-streamlit-app:latest"
+      #     docker run --rm -e GROQ_API_KEY=${{ secrets.GROQ_API_KEY }} -p 8501:8501 $IMAGE_REPO
+
