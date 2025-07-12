@@ -1,4 +1,4 @@
-name: Build Docker Image
+name: Build and Push Docker Image
 
 on:
   push:
@@ -28,8 +28,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository_owner }}/ipl-streamlit-app:latest .
+        run: |
+          IMAGE_REPO="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/ipl-streamlit-app:latest"
+          echo "Building image: $IMAGE_REPO"
+          docker build -t $IMAGE_REPO .
 
-      # Optional: Push image to GitHub Container Registry (remove if not needed)
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository_owner }}/ipl-streamlit-app:latest
+        run: |
+          IMAGE_REPO="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/ipl-streamlit-app:latest"
+          echo "Pushing image: $IMAGE_REPO"
+          docker push $IMAGE_REPO
