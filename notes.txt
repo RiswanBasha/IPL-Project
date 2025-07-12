@@ -28,3 +28,68 @@ F1 (balance both)
 
 You use cross-validation (5 splits) to make sure your results are robust.
 
+
+
+----------------------------------------------------------------------------------------------------
+Let’s Do EC2 First (Quick, Clear, Easy):
+Step 1: Launch an EC2 Instance
+Go to EC2 Dashboard
+
+Launch Ubuntu 22.04 (or Amazon Linux 2023)
+
+Allow TCP Port 8501 (Streamlit default) in security group.
+
+Step 2: SSH and Install Docker
+sh
+Copy
+Edit
+# On your laptop
+ssh ubuntu@<your-ec2-public-ip>
+# On EC2 instance
+sudo apt update
+sudo apt install -y docker.io
+sudo usermod -aG docker $USER
+newgrp docker
+Step 3: Pull and Run Your App
+sh
+Copy
+Edit
+# Login to Docker Hub (optional for public images)
+docker login -u riswan26
+
+# Pull your image
+docker pull riswan26/ipl-streamlit-app:latest
+
+# Run your app with env variable
+docker run -d --restart=always -p 8501:8501 -e GROQ_API_KEY=your-actual-groq-key riswan26/ipl-streamlit-app:latest
+App will be available at http://<ec2-ip>:8501/
+
+Tip: Use Elastic IP for a static address.
+
+Step 4: Set Up Automatic Deployment
+Best practice: Use a simple script or GitHub Actions to SSH into your server and do docker pull && docker restart when you push.
+
+Option 1: Use GitHub Actions for CD
+Store EC2 SSH private key in GitHub Secrets (EC2_SSH_KEY).
+
+Add a step in your workflow after Docker push:
+
+yaml
+Copy
+Edit
+- name: Deploy to EC2
+  uses: appleboy/ssh-action@v0.1.10
+  with:
+    host: ${{ secrets.EC2_HOST }}
+    username: ubuntu
+    key: ${{ secrets.EC2_SSH_KEY }}
+    script: |
+      docker pull riswan26/ipl-streamlit-app:latest
+      docker stop ipl-app || true
+      docker rm ipl-app || true
+      docker run -d --name ipl-app --restart=always -p 8501:8501 \
+        -e GROQ_API_KEY=${{ secrets.GROQ_API_KEY }} \
+        riswan26/ipl-streamlit-app:latest
+Add secrets EC2_HOST, EC2_SSH_KEY, and GROQ_API_KEY to your repo.
+
+Now, after every push, your app redeploys with the latest code.
